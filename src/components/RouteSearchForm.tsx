@@ -52,17 +52,33 @@ const SubmitButtonText = styled.Text`
 interface Props {
   currentCoordinates: Coords;
   onSearchRoute: () => void;
-  fetching: LoadingState;
+  fetchingRoutes: LoadingState;
+  fetchingLocation: LoadingState;
 }
 
 interface State {}
 
 class RouteSearchForm extends Component<Props, State> {
+  getLocationText = (val?: number) => {
+    const { fetchingLocation } = this.props;
+    switch (fetchingLocation) {
+      case LoadingState.UNKNOWN:
+        return "Starting to fetch...";
+      case LoadingState.LOADING:
+        return "Loading...";
+      case LoadingState.LOADED:
+        if (val) return `${val}`;
+        return "No value!";
+      case LoadingState.ERROR:
+        return "ERROR";
+    }
+  };
+
   render() {
     const {
       currentCoordinates: { lat, lon },
       onSearchRoute,
-      fetching
+      fetchingRoutes
     } = this.props;
 
     return (
@@ -70,10 +86,10 @@ class RouteSearchForm extends Component<Props, State> {
         <InputLabel>Your Location</InputLabel>
         <CoordinateInputsWrapper>
           <CoordinatesLabel>Lat: </CoordinatesLabel>
-          <Input value={`${lat || ""}`} editable={false} disabled />
+          <Input value={this.getLocationText(lat)} editable={false} disabled />
 
           <CoordinatesLabel>Long: </CoordinatesLabel>
-          <Input value={`${lon || ""}`} editable={false} disabled />
+          <Input value={this.getLocationText(lon)} editable={false} disabled />
         </CoordinateInputsWrapper>
 
         <InputLabel>Destination</InputLabel>
@@ -81,9 +97,9 @@ class RouteSearchForm extends Component<Props, State> {
 
         <SubmitButton
           onPress={onSearchRoute}
-          disabled={fetching === LoadingState.LOADING}
+          disabled={fetchingRoutes === LoadingState.LOADING}
         >
-          {fetching === LoadingState.LOADING ? (
+          {fetchingRoutes === LoadingState.LOADING ? (
             <ActivityIndicator color={"white"} size={"small"} />
           ) : (
             <SubmitButtonText>Find route</SubmitButtonText>

@@ -30,7 +30,8 @@ interface State {
   lon?: number;
   error?: string;
   routeResults?: RouteSearchResponse;
-  fetching: LoadingState;
+  fetchingRoutes: LoadingState;
+  fetchingLocation: LoadingState;
 }
 export default class MainScreen extends Component<Props, State> {
   constructor(props: Props) {
@@ -41,7 +42,8 @@ export default class MainScreen extends Component<Props, State> {
       lon: undefined,
       error: undefined,
       routeResults: undefined,
-      fetching: LoadingState.UNKNOWN
+      fetchingRoutes: LoadingState.UNKNOWN,
+      fetchingLocation: LoadingState.UNKNOWN
     };
   }
 
@@ -56,15 +58,21 @@ export default class MainScreen extends Component<Props, State> {
   }
 
   updateCurrentLocation = () => {
+    this.setState({ fetchingLocation: LoadingState.LOADING });
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
           lat: position.coords.latitude,
           lon: position.coords.longitude,
-          error: undefined
+          error: undefined,
+          fetchingLocation: LoadingState.LOADED
         });
       },
-      error => this.setState({ error: error.message }),
+      error =>
+        this.setState({
+          error: error.message,
+          fetchingLocation: LoadingState.ERROR
+        }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };
@@ -77,7 +85,7 @@ export default class MainScreen extends Component<Props, State> {
       return;
     }
 
-    this.setState({ fetching: LoadingState.LOADING });
+    this.setState({ fetchingRoutes: LoadingState.LOADING });
 
     const query: RouteSearchRequest = {
       start: {
@@ -92,22 +100,30 @@ export default class MainScreen extends Component<Props, State> {
 
     try {
       const routeResults = await API.postRouteSearch(query);
-      this.setState({ routeResults, fetching: LoadingState.LOADED });
+      this.setState({ routeResults, fetchingRoutes: LoadingState.LOADED });
     } catch (e) {
       // TODO: Handle error state
-      this.setState({ fetching: LoadingState.ERROR, error: e.message });
+      this.setState({ fetchingRoutes: LoadingState.ERROR, error: e.message });
     }
   };
 
   render() {
-    const { lat, lon, routeResults, fetching, error } = this.state;
+    const {
+      lat,
+      lon,
+      routeResults,
+      fetchingRoutes,
+      fetchingLocation,
+      error
+    } = this.state;
     return (
       <MainContainer>
         {!routeResults ? (
           <RouteSearchForm
             currentCoordinates={{ lat, lon }}
             onSearchRoute={this.findRoute}
-            fetching={fetching}
+            fetchingRoutes={fetchingRoutes}
+            fetchingLocation={fetchingLocation}
           />
         ) : (
           <View>
