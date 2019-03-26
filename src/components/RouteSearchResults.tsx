@@ -26,11 +26,7 @@ class RouteSearchResults extends Component<Props, State> {
   isEmpty = (obj: Object) => Object.entries(obj).length === 0
 
   render() {
-    const { routeResults, errors } = this.props
-
-    if (this.isEmpty(routeResults)) return <Text>Search results will appear here</Text>
-
-    const { routes = {} } = routeResults
+    const { routeResults: { routes = {}}, errors } = this.props
 
     if (this.isEmpty(routes)) return <Text>No Route Found</Text>
 

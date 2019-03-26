@@ -74,7 +74,7 @@ type Price = {
   calculatedAt: string
 }
 
-type Place = {
+export type Place = {
   title?: string,
   subtitle?: string,
   name?: string,
