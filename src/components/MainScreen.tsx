@@ -7,6 +7,7 @@ import RouteSearchForm from "../components/RouteSearchForm";
 import { RouteSearchRequest, RouteSearchResponse } from "../types/RouteSearch";
 import RouteSearchResults from "../components/RouteSearchResults";
 import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
+import { LoadingState } from "../types/LoadingState";
 
 interface Props {}
 
@@ -15,6 +16,7 @@ interface State {
   lon: number;
   error?: string;
   routeResults?: RouteSearchResponse;
+  fetching: LoadingState;
 }
 export default class MainScreen extends Component<Props, State> {
   constructor(props: Props) {
@@ -24,7 +26,8 @@ export default class MainScreen extends Component<Props, State> {
       lat: 60.2033217,
       lon: 24.6562533,
       error: undefined,
-      routeResults: undefined
+      routeResults: undefined,
+      fetching: LoadingState.UNKNOWN
     };
   }
 
@@ -50,6 +53,8 @@ export default class MainScreen extends Component<Props, State> {
 
   searchRoute = async () => {
     const { lat, lon } = this.state;
+    this.setState({ fetching: LoadingState.LOADING });
+
     const query: RouteSearchRequest = {
       start: {
         location: {
@@ -63,30 +68,34 @@ export default class MainScreen extends Component<Props, State> {
 
     try {
       const routeResults = await API.postRouteSearch(query);
-      this.setState({ routeResults });
+      this.setState({ routeResults, fetching: LoadingState.LOADED });
     } catch (e) {
       // TODO: Handle error
       console.error(e);
+      this.setState({ fetching: LoadingState.ERROR });
     }
   };
 
   render() {
-    const { lat, lon, routeResults } = this.state;
+    const { lat, lon, routeResults, fetching } = this.state;
     return (
       <View>
         {!routeResults ? (
           <RouteSearchForm
             currentCoordinates={{ lat, lon }}
             onSearchRoute={this.searchRoute}
+            fetching={fetching}
           />
         ) : (
-          <RouteSearchResults routeResults={routeResults} />
+          <View>
+            <RouteSearchResults routeResults={routeResults} />
+            <TouchableOpacity
+              onPress={() => this.setState({ routeResults: undefined })}
+            >
+              <Text>Clear search</Text>
+            </TouchableOpacity>
+          </View>
         )}
-        <TouchableOpacity
-          onPress={() => this.setState({ routeResults: undefined })}
-        >
-          <Text>Clear search</Text>
-        </TouchableOpacity>
       </View>
     );
   }
