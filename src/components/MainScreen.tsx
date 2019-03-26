@@ -1,6 +1,8 @@
 import React from "react";
 import { Component } from "react";
-import { View, TouchableOpacity, Text, AsyncStorage } from "react-native";
+import { View, Text, Platform } from "react-native";
+import styled from 'styled-components/native'
+
 import { requestLocationPermissionAndroid } from "../utils/AndroidPermissions";
 import API from "../services/Api";
 import RouteSearchForm from "../components/RouteSearchForm";
@@ -9,11 +11,24 @@ import RouteSearchResults from "../components/RouteSearchResults";
 import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
 import { LoadingState } from "../types/LoadingState";
 
+
+const MainContainer = styled.View`
+  margin: 20px;
+`
+
+const GoBackButton = styled.TouchableOpacity`
+  border: 1px solid orange;
+  border-radius: 2px;
+  padding: 10px;
+  width: 150px;
+  margin-top: 20px;
+`
+
 interface Props {}
 
 interface State {
-  lat: number;
-  lon: number;
+  lat?: number;
+  lon?: number;
   error?: string;
   routeResults?: RouteSearchResponse;
   fetching: LoadingState;
@@ -23,8 +38,8 @@ export default class MainScreen extends Component<Props, State> {
     super(props);
 
     this.state = {
-      lat: 60.2033217,
-      lon: 24.6562533,
+      lat: undefined,
+      lon: undefined,
       error: undefined,
       routeResults: undefined,
       fetching: LoadingState.UNKNOWN
@@ -32,32 +47,37 @@ export default class MainScreen extends Component<Props, State> {
   }
 
   componentDidMount() {
-    // if (Platform.OS === 'android') requestLocationPermissionAndroid()
-    // navigator.geolocation.requestAuthorization()
-    // this.updateCurrentLocation()
-    AsyncStorage.getItem("RESULTS").then(resultsStr => {
-      if (resultsStr) {
-        this.setState({ routeResults: JSON.parse(resultsStr) });
-      }
-    });
+    if (Platform.OS === 'android') {
+      requestLocationPermissionAndroid()
+    } else {
+      navigator.geolocation.requestAuthorization()
+    }
+    
+    this.updateCurrentLocation()
   }
 
   updateCurrentLocation = () => {
-    // navigator.geolocation.getCurrentPosition(
-    //   (position) => {
-    //     this.setState({
-    //       lat: position.coords.latitude,
-    //       lon: position.coords.longitude,
-    //       error: undefined,
-    //     });
-    //   },
-    //   (error) => this.setState({ error: error.message }),
-    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    // );
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+          error: undefined,
+        });
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
   };
 
-  searchRoute = async () => {
+  findRoute = async () => {
     const { lat, lon } = this.state;
+  
+    if (!lat || !lon) {
+      this.setState({ error: 'Could not find your geolocation' })
+      return
+    }
+    
     this.setState({ fetching: LoadingState.LOADING });
 
     const query: RouteSearchRequest = {
@@ -73,36 +93,35 @@ export default class MainScreen extends Component<Props, State> {
 
     try {
       const routeResults = await API.postRouteSearch(query);
-      AsyncStorage.setItem("RESULTS", JSON.stringify(routeResults));
       this.setState({ routeResults, fetching: LoadingState.LOADED });
     } catch (e) {
-      // TODO: Handle error
-      console.error(e);
-      this.setState({ fetching: LoadingState.ERROR });
+      // TODO: Handle error state
+      this.setState({ fetching: LoadingState.ERROR, error: e.message });
     }
   };
 
   render() {
-    const { lat, lon, routeResults, fetching } = this.state;
+    const { lat, lon, routeResults, fetching, error } = this.state;
     return (
-      <View>
+      <MainContainer>
         {!routeResults ? (
           <RouteSearchForm
             currentCoordinates={{ lat, lon }}
-            onSearchRoute={this.searchRoute}
+            onSearchRoute={this.findRoute}
             fetching={fetching}
           />
         ) : (
           <View>
             <RouteSearchResults routeResults={routeResults} />
-            <TouchableOpacity
+            <GoBackButton
               onPress={() => this.setState({ routeResults: undefined })}
             >
-              <Text>Clear search</Text>
-            </TouchableOpacity>
+              <Text>Go Back</Text>
+            </GoBackButton>
           </View>
         )}
-      </View>
+        {error && <Text>{`ERROR: ${error}`}</Text>}
+      </MainContainer>
     );
   }
 }

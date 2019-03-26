@@ -8,7 +8,7 @@ import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
 
 const FormContainer = styled.View`
   display: flex;
-  margin: 40% 20px;
+  margin: 40% 0;
 `;
 
 const InputLabel = styled.Text`
@@ -30,6 +30,7 @@ const Input = styled.TextInput`
 const CoordinateInputsWrapper = styled.View`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 `;
 
 const CoordinatesLabel = styled.Text`
@@ -69,10 +70,10 @@ class RouteSearchForm extends Component<Props, State> {
         <InputLabel>Your Location</InputLabel>
         <CoordinateInputsWrapper>
           <CoordinatesLabel>Lat: </CoordinatesLabel>
-          <Input value={`${lat}`} editable={false} disabled />
+          <Input value={`${lat || ''}`} editable={false} disabled />
 
           <CoordinatesLabel>Long: </CoordinatesLabel>
-          <Input value={`${lon}`} editable={false} disabled />
+          <Input value={`${lon || ''}`} editable={false} disabled />
         </CoordinateInputsWrapper>
 
         <InputLabel>Destination</InputLabel>

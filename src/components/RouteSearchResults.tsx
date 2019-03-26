@@ -6,7 +6,6 @@ import { RouteSearchResponse, Route } from "../types/RouteSearch";
 import ResultsListItem from "./RouteSearchResults/ResultsListItem";
 
 const ResultsContainer = styled.ScrollView`
-  margin: 20px;
   height: 85%;
 `;
 
