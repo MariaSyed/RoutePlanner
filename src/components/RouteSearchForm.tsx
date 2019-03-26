@@ -30,11 +30,11 @@ const Input = styled.TextInput`
 const CoordinateInputsWrapper = styled.View`
   display: flex;
   flex-direction: row;
-`
+`;
 
 const CoordinatesLabel = styled.Text`
   padding: 10px;
-`
+`;
 
 const SubmitButton = styled.TouchableOpacity`
   background-color: #ff6e00;

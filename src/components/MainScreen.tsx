@@ -1,6 +1,6 @@
 import React from "react";
 import { Component } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text, AsyncStorage } from "react-native";
 import { requestLocationPermissionAndroid } from "../utils/AndroidPermissions";
 import API from "../services/Api";
 import RouteSearchForm from "../components/RouteSearchForm";
@@ -35,6 +35,11 @@ export default class MainScreen extends Component<Props, State> {
     // if (Platform.OS === 'android') requestLocationPermissionAndroid()
     // navigator.geolocation.requestAuthorization()
     // this.updateCurrentLocation()
+    AsyncStorage.getItem("RESULTS").then(resultsStr => {
+      if (resultsStr) {
+        this.setState({ routeResults: JSON.parse(resultsStr) });
+      }
+    });
   }
 
   updateCurrentLocation = () => {
@@ -68,6 +73,7 @@ export default class MainScreen extends Component<Props, State> {
 
     try {
       const routeResults = await API.postRouteSearch(query);
+      AsyncStorage.setItem("RESULTS", JSON.stringify(routeResults));
       this.setState({ routeResults, fetching: LoadingState.LOADED });
     } catch (e) {
       // TODO: Handle error

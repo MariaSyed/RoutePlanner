@@ -58,7 +58,7 @@ type RequiredTerms = {
   version: string;
 };
 
-type RouteTime = {
+export type RouteTime = {
   time: string;
   toleranceBefore: number;
   toleranceAfter: number;
@@ -92,11 +92,11 @@ export type Place = {
   location: Coords;
   stopCode?: number;
   stopId?: number;
-  departureTime?: any;
-  arrivalTime?: any;
+  departureTime?: RouteTime;
+  arrivalTime?: RouteTime;
 };
 
-type RouteLeg = {
+export type RouteLeg = {
   departureTime: RouteTime;
   arrivalTime: RouteTime;
   price: Price;
@@ -105,4 +105,10 @@ type RouteLeg = {
   travelMode: TravelMode;
   places: [Place];
   shape: [[number, number]];
+  headingTo?: string;
+  line?: {
+    code?: string;
+    travelMode?: TravelMode;
+    iconRef?: string;
+  };
 };

@@ -1,7 +1,20 @@
 import React from "react";
 import { Component } from "react";
-import { View, Text } from "react-native";
+import { Text } from "react-native";
+import styled from "styled-components/native";
 import { RouteSearchResponse, Route } from "../types/RouteSearch";
+import ResultsListItem from "./RouteSearchResults/ResultsListItem";
+
+const ResultsContainer = styled.ScrollView`
+  margin: 20px;
+  height: 85%;
+`;
+
+const HeaderTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
 
 interface Props {
   routeResults: RouteSearchResponse;
@@ -10,17 +23,6 @@ interface Props {
 
 interface State {}
 
-type RowProps = {
-  title: string;
-  value: string | number;
-};
-
-const Row = ({ title, value }: RowProps) => (
-  <View>
-    <Text>{title}</Text>
-    <Text>{value}</Text>
-  </View>
-);
 class RouteSearchResults extends Component<Props, State> {
   isEmpty = (obj: Object) => Object.entries(obj).length === 0;
 
@@ -35,18 +37,13 @@ class RouteSearchResults extends Component<Props, State> {
     const publicTransportRoutes: [Route] = routes["publicTransport"];
 
     return (
-      <View>
-        <Text>Public Transport</Text>
+      <ResultsContainer>
+        <HeaderTitle>Public Transport Options</HeaderTitle>
+
         {publicTransportRoutes.map((route, i) => (
-          <View key={i}>
-            <Row
-              title={"total price"}
-              value={route.totalPrice.formattedPrice}
-            />
-            <Row title={"distance:"} value={route.distance} />
-          </View>
+          <ResultsListItem route={route} key={i} />
         ))}
-      </View>
+      </ResultsContainer>
     );
   }
 }
