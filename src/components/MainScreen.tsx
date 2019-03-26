@@ -1,40 +1,36 @@
-import React from 'react';
-import { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
-import { requestLocationPermissionAndroid } from '../utils/AndroidPermissions';
-import API from '../services/Api';
-import RouteSearchForm from '../components/RouteSearchForm';
-import { RouteSearchRequest, RouteSearchResponse } from '../types/RouteSearch';
-import RouteSearchResults from '../components/RouteSearchResults';
-import { KYYTI_GROUP_LOCATION } from '../constants/Locations';
+import React from "react";
+import { Component } from "react";
+import { View, TouchableOpacity, Text } from "react-native";
+import { requestLocationPermissionAndroid } from "../utils/AndroidPermissions";
+import API from "../services/Api";
+import RouteSearchForm from "../components/RouteSearchForm";
+import { RouteSearchRequest, RouteSearchResponse } from "../types/RouteSearch";
+import RouteSearchResults from "../components/RouteSearchResults";
+import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
 
 interface Props {}
 
 interface State {
-  lat: number,
-  lon: number,
-  error?: string,
-  routeResults?: RouteSearchResponse
+  lat: number;
+  lon: number;
+  error?: string;
+  routeResults?: RouteSearchResponse;
 }
 export default class MainScreen extends Component<Props, State> {
-
   constructor(props: Props) {
-    super(props)
+    super(props);
 
     this.state = {
       lat: 60.2033217,
       lon: 24.6562533,
       error: undefined,
       routeResults: undefined
-    }
+    };
   }
-
 
   componentDidMount() {
     // if (Platform.OS === 'android') requestLocationPermissionAndroid()
-
     // navigator.geolocation.requestAuthorization()
-
     // this.updateCurrentLocation()
   }
 
@@ -50,10 +46,10 @@ export default class MainScreen extends Component<Props, State> {
     //   (error) => this.setState({ error: error.message }),
     //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     // );
-  }
+  };
 
   searchRoute = async () => {
-    const { lat, lon } = this.state
+    const { lat, lon } = this.state;
     const query: RouteSearchRequest = {
       start: {
         location: {
@@ -62,35 +58,33 @@ export default class MainScreen extends Component<Props, State> {
         }
       },
       end: KYYTI_GROUP_LOCATION,
-      routeModes: 'publicTransport'
-    }
+      routeModes: "publicTransport"
+    };
 
     try {
-      const routeResults = await API.postRouteSearch(query)
-      this.setState({ routeResults })
+      const routeResults = await API.postRouteSearch(query);
+      this.setState({ routeResults });
     } catch (e) {
       // TODO: Handle error
-      console.error(e)
+      console.error(e);
     }
-
-  }
+  };
 
   render() {
-    const { lat, lon, routeResults } = this.state
+    const { lat, lon, routeResults } = this.state;
     return (
       <View>
-        {
-          !routeResults
-          ?
+        {!routeResults ? (
           <RouteSearchForm
-          currentCoordinates={{ lat, lon }}
-          onSearchRoute={this.searchRoute}
+            currentCoordinates={{ lat, lon }}
+            onSearchRoute={this.searchRoute}
           />
-          : <RouteSearchResults
-          routeResults={routeResults}
-        />
-        }
-        <TouchableOpacity onPress={() => this.setState({ routeResults: undefined })}>
+        ) : (
+          <RouteSearchResults routeResults={routeResults} />
+        )}
+        <TouchableOpacity
+          onPress={() => this.setState({ routeResults: undefined })}
+        >
           <Text>Clear search</Text>
         </TouchableOpacity>
       </View>

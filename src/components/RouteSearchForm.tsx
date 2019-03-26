@@ -1,22 +1,27 @@
-import React from 'react'
-import { Component } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { Coords } from '../types/RouteSearch';
+import React from "react";
+import { Component } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import { Coords } from "../types/RouteSearch";
 
 interface Props {
-  currentCoordinates: Coords,
-  onSearchRoute: () => void
+  currentCoordinates: Coords;
+  onSearchRoute: () => void;
 }
 
 interface State {}
 
 class RouteSearchForm extends Component<Props, State> {
   render() {
-    const { currentCoordinates: { lat, lon }, onSearchRoute } = this.props
+    const {
+      currentCoordinates: { lat, lon },
+      onSearchRoute
+    } = this.props;
 
     return (
       <View>
-        <Text>Your location: {lat} {lon} </Text>
+        <Text>
+          Your location: {lat} {lon}{" "}
+        </Text>
 
         <Text>Destination: Kyyti HeadQuarters</Text>
 
@@ -24,8 +29,8 @@ class RouteSearchForm extends Component<Props, State> {
           <Text>Find route</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
 }
 
-export default RouteSearchForm
+export default RouteSearchForm;

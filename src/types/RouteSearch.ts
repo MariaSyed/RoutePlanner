@@ -1,103 +1,108 @@
 export interface RouteSearchRequest {
-  start: Place,
-  end: Place,
-  timeType?: TimeType,
-  time?: string,
-  routeModes?: string,
+  start: Place;
+  end: Place;
+  timeType?: TimeType;
+  time?: string;
+  routeModes?: string;
   passengers?: {
-    count?: number
-  },
+    count?: number;
+  };
   extraInfo?: {
-    extraLuggageCount?: number
-  }
+    extraLuggageCount?: number;
+  };
 }
 
 export interface RouteSearchResponse {
- routes?: {
-   [key: string]: [Route]
- }
+  routes?: {
+    [key: string]: [Route];
+  };
 }
 
 export type Coords = {
-  lat: number,
-  lon: number
-}
+  lat: number;
+  lon: number;
+};
 
 export type Route = {
-  requiredTerms?: [RequiredTerms],
-  departureTime: RouteTime,
-  arrivalTime: RouteTime,
-  mainMode: MainMode,
-  distance: number,
+  requiredTerms?: [RequiredTerms];
+  departureTime: RouteTime;
+  arrivalTime: RouteTime;
+  mainMode: MainMode;
+  distance: number;
   duration: {
-      min: number,
-      max: number
-  },
-  legs: [RouteLeg],
-  totalPrice: Price,
-  request: RouteSearchRequest,
-  preferred: boolean
-}
+    min: number;
+    max: number;
+  };
+  legs: [RouteLeg];
+  totalPrice: Price;
+  request: RouteSearchRequest;
+  preferred: boolean;
+};
 
-type LocationType = 'address' | 'poi' | 'publicTransportStop' | 'carRentalPickupPoint' | 'bikeDock' | 'kyytiPickupPoint'
+type LocationType =
+  | "address"
+  | "poi"
+  | "publicTransportStop"
+  | "carRentalPickupPoint"
+  | "bikeDock"
+  | "kyytiPickupPoint";
 
-type TimeType = 'departure' | 'arrival'
+type TimeType = "departure" | "arrival";
 
-type MainMode = 'kyyti' | 'publicTransport'
+type MainMode = "kyyti" | "publicTransport";
 
-type TravelMode = 'walk' | 'bus' | 'flex'
+type TravelMode = "walk" | "bus" | "flex";
 
 type RequiredTerms = {
-  url: string,
-  version: string
-}
+  url: string;
+  version: string;
+};
 
 type RouteTime = {
-  time: string,
-  toleranceBefore: number,
-  toleranceAfter: number,
-  isRealTime: boolean,
-  timeZone: string
-}
+  time: string;
+  toleranceBefore: number;
+  toleranceAfter: number;
+  isRealTime: boolean;
+  timeZone: string;
+};
 
 type RouteDuration = {
-  min: number,
-  max: number
-}
+  min: number;
+  max: number;
+};
 
 type Price = {
-  formattedPrice: string,
-  total: number,
-  currency: string,
-  product: number,
-  vat: number,
-  calculatedAt: string
-}
+  formattedPrice: string;
+  total: number;
+  currency: string;
+  product: number;
+  vat: number;
+  calculatedAt: string;
+};
 
 export type Place = {
-  title?: string,
-  subtitle?: string,
-  name?: string,
-  address?: string,
-  city?: string,
-  country?: string,
-  type?: LocationType,
-  categories?: [LocationType],
-  location: Coords,
-  stopCode?: number,
-  stopId?: number,
-  departureTime?: any,
-  arrivalTime?: any,
-}
+  title?: string;
+  subtitle?: string;
+  name?: string;
+  address?: string;
+  city?: string;
+  country?: string;
+  type?: LocationType;
+  categories?: [LocationType];
+  location: Coords;
+  stopCode?: number;
+  stopId?: number;
+  departureTime?: any;
+  arrivalTime?: any;
+};
 
 type RouteLeg = {
-  departureTime: RouteTime,
-  arrivalTime: RouteTime,
-  price: Price,
-  distance: number,
-  duration: RouteDuration,
-  travelMode: TravelMode,
-  places: [Place],
-  shape: [[number, number]],
-}
-
+  departureTime: RouteTime;
+  arrivalTime: RouteTime;
+  price: Price;
+  distance: number;
+  duration: RouteDuration;
+  travelMode: TravelMode;
+  places: [Place];
+  shape: [[number, number]];
+};
