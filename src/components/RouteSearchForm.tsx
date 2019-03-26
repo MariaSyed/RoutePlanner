@@ -3,16 +3,17 @@ import { Component } from "react";
 import styled from "styled-components/native";
 import { Coords } from "../types/RouteSearch";
 import { LoadingState } from "../types/LoadingState";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
+import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
 
 const FormContainer = styled.View`
   display: flex;
-  margin: 20% 20px;
+  margin: 40% 20px;
 `;
 
 const InputLabel = styled.Text`
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-weight: 200;
 `;
 
@@ -21,10 +22,19 @@ const Input = styled.TextInput`
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   background-color: ${(props: { disabled: boolean }) =>
     props.disabled ? "#efefef" : "#fff"};
 `;
+
+const CoordinateInputsWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+`
+
+const CoordinatesLabel = styled.Text`
+  padding: 10px;
+`
 
 const SubmitButton = styled.TouchableOpacity`
   background-color: #ff6e00;
@@ -57,10 +67,16 @@ class RouteSearchForm extends Component<Props, State> {
     return (
       <FormContainer>
         <InputLabel>Your Location</InputLabel>
-        <Input value={`${lat} ${lon}`} editable={false} disabled />
+        <CoordinateInputsWrapper>
+          <CoordinatesLabel>Lat: </CoordinatesLabel>
+          <Input value={`${lat}`} editable={false} disabled />
+
+          <CoordinatesLabel>Long: </CoordinatesLabel>
+          <Input value={`${lon}`} editable={false} disabled />
+        </CoordinateInputsWrapper>
 
         <InputLabel>Destination</InputLabel>
-        <Input value={`Kyyti Group`} editable={false} disabled />
+        <Input value={KYYTI_GROUP_LOCATION.address} editable={false} disabled />
 
         <SubmitButton
           onPress={onSearchRoute}
