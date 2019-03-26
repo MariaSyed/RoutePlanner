@@ -1,7 +1,7 @@
 import React from "react";
 import { Component } from "react";
 import { View, Text, Platform } from "react-native";
-import styled from 'styled-components/native'
+import styled from "styled-components/native";
 
 import { requestLocationPermissionAndroid } from "../utils/AndroidPermissions";
 import API from "../services/Api";
@@ -11,10 +11,9 @@ import RouteSearchResults from "../components/RouteSearchResults";
 import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
 import { LoadingState } from "../types/LoadingState";
 
-
 const MainContainer = styled.View`
   margin: 20px;
-`
+`;
 
 const GoBackButton = styled.TouchableOpacity`
   border: 1px solid orange;
@@ -22,7 +21,7 @@ const GoBackButton = styled.TouchableOpacity`
   padding: 10px;
   width: 150px;
   margin-top: 20px;
-`
+`;
 
 interface Props {}
 
@@ -47,37 +46,37 @@ export default class MainScreen extends Component<Props, State> {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android') {
-      requestLocationPermissionAndroid()
+    if (Platform.OS === "android") {
+      requestLocationPermissionAndroid();
     } else {
-      navigator.geolocation.requestAuthorization()
+      navigator.geolocation.requestAuthorization();
     }
-    
-    this.updateCurrentLocation()
+
+    this.updateCurrentLocation();
   }
 
   updateCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         this.setState({
           lat: position.coords.latitude,
           lon: position.coords.longitude,
-          error: undefined,
+          error: undefined
         });
       },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      error => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };
 
   findRoute = async () => {
     const { lat, lon } = this.state;
-  
+
     if (!lat || !lon) {
-      this.setState({ error: 'Could not find your geolocation' })
-      return
+      this.setState({ error: "Could not find your geolocation" });
+      return;
     }
-    
+
     this.setState({ fetching: LoadingState.LOADING });
 
     const query: RouteSearchRequest = {

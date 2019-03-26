@@ -70,10 +70,10 @@ class RouteSearchForm extends Component<Props, State> {
         <InputLabel>Your Location</InputLabel>
         <CoordinateInputsWrapper>
           <CoordinatesLabel>Lat: </CoordinatesLabel>
-          <Input value={`${lat || ''}`} editable={false} disabled />
+          <Input value={`${lat || ""}`} editable={false} disabled />
 
           <CoordinatesLabel>Long: </CoordinatesLabel>
-          <Input value={`${lon || ''}`} editable={false} disabled />
+          <Input value={`${lon || ""}`} editable={false} disabled />
         </CoordinateInputsWrapper>
 
         <InputLabel>Destination</InputLabel>
