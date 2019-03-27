@@ -43,7 +43,7 @@ Project files are in `src` directory and are split by functionality. It has the 
 
 1. _UX Improvement:_ When location fetching results in an error, there could be a refetch button. For now, user has to reload app.
 2. _UX Improvement_: Better handling when user denies location permission. For now, it fills in default location.
-3. _UX/DX Improvement_: Add react-navigation or react-native-navigation for better flow of screens. It is done within one component to not complicate it further.
+3. _UX/DX Improvement_: Add react-navigation or react-native-navigation for better flow of screens. For now, it is done within one component to not complicate it further.
 
 3. _DX Improvement_: Find root cause for metro bundler not working as it should. This issue was present with an empty react native project as well.
 4. _DX Improvement_: Store base url as an environment variable
