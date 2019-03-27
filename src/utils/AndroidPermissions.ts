@@ -13,7 +13,6 @@ export const requestLocationPermissionAndroid = async () => {
     if (fineLocationGranted && coarseLocationGranted) {
       return
     } else {
-      console.log('location permission denied')
       throw new Error('Location permission on android was not granted')
     }
   } catch (err) {
