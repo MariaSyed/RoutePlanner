@@ -58,8 +58,6 @@ export default class MainScreen extends Component<Props, State> {
     try {
       if (Platform.OS === "android") {
         await requestLocationPermissionAndroid();
-      } else {
-        navigator.geolocation.requestAuthorization();
       }
     } catch (e) {
       this.setState({
@@ -86,7 +84,7 @@ export default class MainScreen extends Component<Props, State> {
         this.setState({
           lat: DEFAULT_COORDS.lat,
           lon: DEFAULT_COORDS.lon,
-          error: `${error.message}. Using default coordinates.`,
+          error: `${error.message} Using default coordinates.`,
           fetchingLocation: LoadingState.ERROR
         }),
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
