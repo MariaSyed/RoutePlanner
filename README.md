@@ -15,10 +15,10 @@ Note: Metro bundler does not behave as it should when started with `react-native
 2. Close metro bunder that starts and run `npm start` in project root
 3. Reload app to load files from bundler that you have started
 4. By default the iOS simulator's location is outside Finland, hence, you should change it's location by:
-  1. Open simulator
-  2. Go to Debug > Location > Custom Location
-  3. Enter coordinates of a Finnish metropolitan area, for eg. 60,203322 (lat) and 24,656253 (long)
-  4. Reload App
+   1. Open simulator
+   2. Go to Debug > Location > Custom Location
+   3. Enter coordinates of a Finnish metropolitan area, for eg. 60,203322 (lat) and 24,656253 (long)
+   4. Reload App
   
 ### Run on Android Device/Emulator
 
@@ -41,10 +41,10 @@ Project files are in `src` directory and are split by functionality. It has the 
 
 ## Thoughts on Further Improvement
 
-1. UX Improvement: When location fetching results in an error, there could be a refetch button. For now, user has to reload app.
-2. UX Improvement: Better handling when user denies location permission. For now, it fills in default location.
-3. DX Improvement: Find root cause for metro bundler not working as it should. This issue was present with an empty react native project as well.
-4. DX Improvement: Store base url as an environment variable
-5. DX Improvment: Use React Hooks
-6. DX Improvement: Tests
+1. _UX Improvement:_ When location fetching results in an error, there could be a refetch button. For now, user has to reload app.
+2. _UX Improvement_: Better handling when user denies location permission. For now, it fills in default location.
+3. _DX Improvement_: Find root cause for metro bundler not working as it should. This issue was present with an empty react native project as well.
+4. _DX Improvement_: Store base url as an environment variable
+5. _DX Improvment_: Use React Hooks
+6. _DX Improvement_: Tests
 
