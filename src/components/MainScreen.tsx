@@ -49,16 +49,11 @@ export default class MainScreen extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    await this.requestLocationPermissions();
-
-    this.updateCurrentLocation();
-  }
-
-  async requestLocationPermissions() {
     try {
       if (Platform.OS === "android") {
         await requestLocationPermissionAndroid();
       }
+      this.updateCurrentLocation();
     } catch (e) {
       this.handleError(e)
     }
