@@ -60,9 +60,9 @@ type RequiredTerms = {
 
 export type RouteTime = {
   time: string;
-  toleranceBefore: number;
-  toleranceAfter: number;
-  isRealTime: boolean;
+  toleranceBefore?: number;
+  toleranceAfter?: number;
+  isRealTime?: boolean;
   timeZone: string;
 };
 
@@ -73,11 +73,11 @@ type RouteDuration = {
 
 type Price = {
   formattedPrice: string;
-  total: number;
-  currency: string;
-  product: number;
-  vat: number;
-  calculatedAt: string;
+  total?: number;
+  currency?: string;
+  product?: number;
+  vat?: number;
+  calculatedAt?: string;
 };
 
 export type Place = {

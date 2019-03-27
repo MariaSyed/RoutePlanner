@@ -3,7 +3,7 @@ import { Component } from "react";
 import styled from "styled-components/native";
 import { Coords } from "../types/RouteSearch";
 import { LoadingState } from "../types/LoadingState";
-import { ActivityIndicator, Text } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
 
 const FormContainer = styled.View`

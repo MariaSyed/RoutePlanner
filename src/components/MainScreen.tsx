@@ -3,13 +3,14 @@ import { Component } from "react";
 import { View, Text, Platform } from "react-native";
 import styled from "styled-components/native";
 
+import RouteSearchForm from "../components/RouteSearchForm";
+import RouteSearchResults from "../components/RouteSearchResults/RouteSearchResults";
+
 import { requestLocationPermissionAndroid } from "../utils/AndroidPermissions";
 import API from "../services/Api";
-import RouteSearchForm from "../components/RouteSearchForm";
-import { RouteSearchRequest, RouteSearchResponse } from "../types/RouteSearch";
-import RouteSearchResults from "../components/RouteSearchResults";
 import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
 import { LoadingState } from "../types/LoadingState";
+import { RouteSearchRequest, RouteSearchResponse } from "../types/RouteSearch";
 
 const MainContainer = styled.View`
   margin: 20px;
@@ -70,7 +71,9 @@ export default class MainScreen extends Component<Props, State> {
       },
       error =>
         this.setState({
-          error: error.message,
+          lat: 60.203322,
+          lon: 24.656253,
+          error: `${error.message}. Using default coordinates.`,
           fetchingLocation: LoadingState.ERROR
         }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { Component } from "react";
-import moment from "moment-timezone";
-import { RouteTime, Route, RouteLeg } from "../../types/RouteSearch";
+import { Route, RouteLeg } from "../../types/RouteSearch";
 import styled from "styled-components/native";
 import { formattedTime, duration } from "../../utils/TimeFormatter";
 
@@ -58,24 +57,25 @@ interface State {}
 
 class ResultsListItem extends Component<Props, State> {
   render() {
-    const { route } = this.props;
+    const defaultRouteLegs: RouteLeg[] = []
+    const { route: { departureTime = {time: '', timeZone: ''}, arrivalTime = {time: '', timeZone: ''}, legs = defaultRouteLegs, totalPrice = { formattedPrice: '' }} } = this.props;
 
     return (
       <Container>
         <Column1>
           <BoldText>
-            {formattedTime(route.departureTime)} -{" "}
-            {formattedTime(route.arrivalTime)}
+            {formattedTime(departureTime)} -{" "}
+            {formattedTime(arrivalTime)}
           </BoldText>
 
-          {route.legs.map((leg, i) => <RouteLegRow leg={leg} key={i} />)}
+          {legs.map((leg, i) => <RouteLegRow leg={leg} key={i} />)}
         </Column1>
 
         <Column2>
           <ResultText>
-            {duration(route.departureTime, route.arrivalTime)} min
+            {duration(departureTime, arrivalTime)} min
           </ResultText>
-          <ResultText>{route.totalPrice.formattedPrice}</ResultText>
+          <ResultText>{totalPrice.formattedPrice}</ResultText>
         </Column2>
       </Container>
     );
