@@ -11,8 +11,8 @@ It fetches your current location and shows you possible routes to reach Kyyti Gr
 
 Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 2 and 3 are necessary.
 
-1. `react-native run-ios`
-2. Close metro bunder that starts and run `npm start` in project
+1. Run `react-native run-ios`
+2. Close metro bunder that starts and run `npm start` in project root
 3. Reload app to load files from bundler that you have started
 4. By default the iOS simulator's location is outside Finland, hence, you should change it's location by:
   1. Open simulator
@@ -22,11 +22,11 @@ Note: Metro bundler does not behave as it should when started with `react-native
   
 ### Run on Android Device/Emulator
 
-Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 2 and 3 are necessary.
+Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 3 and 4 are necessary.
 
 1. Connect physical Android device or have Android emulator ready
-2. `react-native run-android`
-3. Close metro bunder that starts and run `npm start` in project
+2. Run `react-native run-android`
+3. Close metro bunder that starts and run `npm start` in project root
 4. Reload app to load files from bundler that you have started
 
 ## Project Structure
@@ -46,4 +46,5 @@ Project files are in `src` directory and are split by functionality. It has the 
 3. DX Improvement: Find root cause for metro bundler not working as it should. This issue was present with an empty react native project as well.
 4. DX Improvement: Store base url as an environment variable
 5. DX Improvment: Use React Hooks
+6. DX Improvement: Tests
 
