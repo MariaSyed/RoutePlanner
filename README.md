@@ -45,6 +45,7 @@ Project files are in `src` directory and are split by functionality. It has the 
 2. _UX Improvement_: Better handling when user denies location permission. For now, it fills in default location.
 3. _UX/DX Improvement_: Add react-navigation or react-native-navigation for better flow of screens. For now, it is done within one component to not complicate it further.
 
+4. _DX Improvement_: Use Api wrapper library, for eg. axios, api-sauce, to make api calls. For now, it uses fetch since there is only one api call being made.
 3. _DX Improvement_: Update react-native version to remove bundler bug
 4. _DX Improvement_: Store base url as an environment variable
 5. _DX Improvment_: Use React Hooks
