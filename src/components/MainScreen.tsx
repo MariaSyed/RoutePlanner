@@ -60,12 +60,7 @@ export default class MainScreen extends Component<Props, State> {
         await requestLocationPermissionAndroid();
       }
     } catch (e) {
-      this.setState({
-        lat: DEFAULT_COORDS.lat,
-        lon: DEFAULT_COORDS.lon,
-        fetchingLocation: LoadingState.ERROR,
-        error: `${e}. Using default values.`
-      });
+      this.handleError(e)
     }
   }
 
@@ -80,22 +75,25 @@ export default class MainScreen extends Component<Props, State> {
           fetchingLocation: LoadingState.LOADED
         });
       },
-      error =>
-        this.setState({
-          lat: DEFAULT_COORDS.lat,
-          lon: DEFAULT_COORDS.lon,
-          error: `${error.message}. Using default coordinates.`,
-          fetchingLocation: LoadingState.ERROR
-        }),
+      error => this.handleError(error),
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
     );
   };
+
+  handleError = (error: Error | PositionError) => {
+    this.setState({
+      lat: DEFAULT_COORDS.lat,
+      lon: DEFAULT_COORDS.lon,
+      error: `${error.message} Using default coordinates.`,
+      fetchingLocation: LoadingState.ERROR
+    })
+  }
 
   findRoute = async () => {
     const { lat, lon } = this.state;
 
     if (!lat || !lon) {
-      this.setState({ error: "Could not find your geolocation" });
+      this.setState({ error: "Could not find your geolocation." });
       return;
     }
 

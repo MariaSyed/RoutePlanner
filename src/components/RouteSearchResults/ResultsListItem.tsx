@@ -38,10 +38,10 @@ interface RouteLegRowProps {
 }
 
 const RouteLegRow = ({
-  leg: { departureTime, arrivalTime, travelMode, headingTo, line = {} }
+  leg: { departureTime, arrivalTime, travelMode, headingTo, line }
 }: RouteLegRowProps) => (
   <ResultText>
-    {formattedTime(departureTime)} : {travelMode} {line.code} {headingTo} ({duration(
+    {formattedTime(departureTime)} : {travelMode} {(line || {}).code} {headingTo} ({duration(
       departureTime,
       arrivalTime
     )} min)
