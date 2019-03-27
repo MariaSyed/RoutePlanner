@@ -9,7 +9,7 @@ It fetches your current location and shows you possible routes to reach Kyyti Gr
 
 ### Run on iOS Simulator
 
-Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 2 and 3 are necessary.
+Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 2 and 3 are necessary. This issue was supposedly fixed with the new react native version 0.59.2 released on 26th March 2019.
 
 1. Run `react-native run-ios`
 2. Close the metro bunder that starts and run `npm start` in project root
@@ -22,7 +22,7 @@ Note: Metro bundler does not behave as it should when started with `react-native
   
 ### Run on Android Device/Emulator
 
-Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 3 and 4 are necessary.
+Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 3 and 4 are necessary. This issue was supposedly fixed with the new react native version 0.59.2 released on 26th March 2019.
 
 1. Connect a physical android device or have an android emulator ready
 2. Run `react-native run-android`
@@ -45,7 +45,7 @@ Project files are in `src` directory and are split by functionality. It has the 
 2. _UX Improvement_: Better handling when user denies location permission. For now, it fills in default location.
 3. _UX/DX Improvement_: Add react-navigation or react-native-navigation for better flow of screens. For now, it is done within one component to not complicate it further.
 
-3. _DX Improvement_: Find root cause for metro bundler not working as it should. This issue was present with an empty react native project as well.
+3. _DX Improvement_: Update react-native version to remove bundler bug
 4. _DX Improvement_: Store base url as an environment variable
 5. _DX Improvment_: Use React Hooks
 6. _DX Improvement_: Tests
