@@ -8,7 +8,7 @@ import RouteSearchResults from "../components/RouteSearchResults/RouteSearchResu
 
 import { requestLocationPermissionAndroid } from "../utils/AndroidPermissions";
 import API from "../services/Api";
-import { KYYTI_GROUP_LOCATION } from "../constants/Locations";
+import { KYYTI_GROUP_LOCATION, DEFAULT_COORDS } from "../constants/Locations";
 import { LoadingState } from "../types/LoadingState";
 import { RouteSearchRequest, RouteSearchResponse } from "../types/RouteSearch";
 
@@ -48,14 +48,27 @@ export default class MainScreen extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
-    if (Platform.OS === "android") {
-      requestLocationPermissionAndroid();
-    } else {
-      navigator.geolocation.requestAuthorization();
-    }
+  async componentDidMount() {
+    await this.requestLocationPermissions()
 
     this.updateCurrentLocation();
+  }
+
+  async requestLocationPermissions() {
+    try {
+      if (Platform.OS === "android") {
+        await requestLocationPermissionAndroid();
+      } else {
+        navigator.geolocation.requestAuthorization();
+      }
+    } catch (e) {
+      this.setState({
+        lat: DEFAULT_COORDS.lat,
+        lon: DEFAULT_COORDS.lon,
+        fetchingLocation: LoadingState.ERROR,
+        error: `${e}. Using default values.`
+      })
+    }
   }
 
   updateCurrentLocation = () => {
@@ -71,12 +84,12 @@ export default class MainScreen extends Component<Props, State> {
       },
       error =>
         this.setState({
-          lat: 60.203322,
-          lon: 24.656253,
+          lat: DEFAULT_COORDS.lat,
+          lon: DEFAULT_COORDS.lon,
           error: `${error.message}. Using default coordinates.`,
           fetchingLocation: LoadingState.ERROR
         }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
     );
   };
 
@@ -88,7 +101,7 @@ export default class MainScreen extends Component<Props, State> {
       return;
     }
 
-    this.setState({ fetchingRoutes: LoadingState.LOADING });
+    this.setState({ fetchingRoutes: LoadingState.LOADING, error: undefined });
 
     const query: RouteSearchRequest = {
       start: {
@@ -105,7 +118,6 @@ export default class MainScreen extends Component<Props, State> {
       const routeResults = await API.postRouteSearch(query);
       this.setState({ routeResults, fetchingRoutes: LoadingState.LOADED });
     } catch (e) {
-      // TODO: Handle error state
       this.setState({ fetchingRoutes: LoadingState.ERROR, error: e.message });
     }
   };

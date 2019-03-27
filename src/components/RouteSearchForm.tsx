@@ -61,16 +61,17 @@ interface State {}
 class RouteSearchForm extends Component<Props, State> {
   getLocationText = (val?: number) => {
     const { fetchingLocation } = this.props;
+    if (val) return `${val}`;
+
     switch (fetchingLocation) {
-      case LoadingState.UNKNOWN:
-        return "Starting to fetch...";
       case LoadingState.LOADING:
         return "Loading...";
-      case LoadingState.LOADED:
-        if (val) return `${val}`;
-        return "No value!";
       case LoadingState.ERROR:
         return "ERROR";
+      case LoadingState.UNKNOWN:
+      case LoadingState.LOADED:
+      default:
+        return "No value";
     }
   };
 
@@ -78,7 +79,8 @@ class RouteSearchForm extends Component<Props, State> {
     const {
       currentCoordinates: { lat, lon },
       onSearchRoute,
-      fetchingRoutes
+      fetchingRoutes,
+      fetchingLocation
     } = this.props;
 
     return (
@@ -97,7 +99,7 @@ class RouteSearchForm extends Component<Props, State> {
 
         <SubmitButton
           onPress={onSearchRoute}
-          disabled={fetchingRoutes === LoadingState.LOADING}
+          disabled={fetchingRoutes === LoadingState.LOADING || fetchingLocation === LoadingState.LOADING}
         >
           {fetchingRoutes === LoadingState.LOADING ? (
             <ActivityIndicator color={"white"} size={"small"} />

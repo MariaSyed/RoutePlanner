@@ -2,24 +2,21 @@ import { PermissionsAndroid } from "react-native";
 
 export const requestLocationPermissionAndroid = async () => {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: "Kyyti Route Planner Location Permission",
-        message:
-          "Kyyti Route Planner needs access to your location " +
-          "so you can find the best route to Kyyti HQ ",
-        buttonNeutral: "Ask Me Later",
-        buttonNegative: "Cancel",
-        buttonPositive: "OK"
-      }
+    const granted = await PermissionsAndroid.requestMultiple(
+      [PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+      ]
     );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the location");
+    const fineLocationGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION );
+    const coarseLocationGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION );
+
+    if (fineLocationGranted && coarseLocationGranted) {
+      return
     } else {
-      console.log("Location permission denied");
+      console.log('location permission denied')
+      throw new Error('Location permission on android was not granted')
     }
   } catch (err) {
-    console.warn(err);
+    throw err
   }
 };
