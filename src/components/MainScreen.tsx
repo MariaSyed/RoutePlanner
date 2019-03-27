@@ -49,7 +49,7 @@ export default class MainScreen extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    await this.requestLocationPermissions()
+    await this.requestLocationPermissions();
 
     this.updateCurrentLocation();
   }
@@ -65,7 +65,7 @@ export default class MainScreen extends Component<Props, State> {
         lon: DEFAULT_COORDS.lon,
         fetchingLocation: LoadingState.ERROR,
         error: `${e}. Using default values.`
-      })
+      });
     }
   }
 

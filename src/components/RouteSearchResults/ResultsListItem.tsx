@@ -37,14 +37,14 @@ interface RouteLegRowProps {
   leg: RouteLeg;
 }
 
-const RouteLegRow = ({ leg }: RouteLegRowProps) => (
+const RouteLegRow = ({
+  leg: { departureTime, arrivalTime, travelMode, headingTo, line = {} }
+}: RouteLegRowProps) => (
   <ResultText>
-    {formattedTime(leg.departureTime)} : {leg.travelMode}{" "}
-    {(leg.line || {}).code} {leg.headingTo} ({duration(
-      leg.departureTime,
-      leg.arrivalTime
-    )}{" "}
-    min)
+    {formattedTime(departureTime)} : {travelMode} {line.code} {headingTo} ({duration(
+      departureTime,
+      arrivalTime
+    )} min)
   </ResultText>
 );
 
@@ -57,24 +57,28 @@ interface State {}
 
 class ResultsListItem extends Component<Props, State> {
   render() {
-    const defaultRouteLegs: RouteLeg[] = []
-    const { route: { departureTime = {time: '', timeZone: ''}, arrivalTime = {time: '', timeZone: ''}, legs = defaultRouteLegs, totalPrice = { formattedPrice: '' }} } = this.props;
+    const defaultRouteLegs: RouteLeg[] = [];
+    const {
+      route: {
+        departureTime = { time: "", timeZone: "" },
+        arrivalTime = { time: "", timeZone: "" },
+        legs = defaultRouteLegs,
+        totalPrice = { formattedPrice: "" }
+      }
+    } = this.props;
 
     return (
       <Container>
         <Column1>
           <BoldText>
-            {formattedTime(departureTime)} -{" "}
-            {formattedTime(arrivalTime)}
+            {formattedTime(departureTime)} - {formattedTime(arrivalTime)}
           </BoldText>
 
           {legs.map((leg, i) => <RouteLegRow leg={leg} key={i} />)}
         </Column1>
 
         <Column2>
-          <ResultText>
-            {duration(departureTime, arrivalTime)} min
-          </ResultText>
+          <ResultText>{duration(departureTime, arrivalTime)} min</ResultText>
           <ResultText>{totalPrice.formattedPrice}</ResultText>
         </Column2>
       </Container>

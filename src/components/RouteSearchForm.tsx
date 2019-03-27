@@ -99,7 +99,10 @@ class RouteSearchForm extends Component<Props, State> {
 
         <SubmitButton
           onPress={onSearchRoute}
-          disabled={fetchingRoutes === LoadingState.LOADING || fetchingLocation === LoadingState.LOADING}
+          disabled={
+            fetchingRoutes === LoadingState.LOADING ||
+            fetchingLocation === LoadingState.LOADING
+          }
         >
           {fetchingRoutes === LoadingState.LOADING ? (
             <ActivityIndicator color={"white"} size={"small"} />
