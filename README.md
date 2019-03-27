@@ -12,9 +12,9 @@ It fetches your current location and shows you possible routes to reach Kyyti Gr
 Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 2 and 3 are necessary.
 
 1. Run `react-native run-ios`
-2. Close metro bunder that starts and run `npm start` in project root
-3. Reload app to load files from bundler that you have started
-4. By default the iOS simulator's location is outside Finland, hence, you should change it's location by:
+2. Close the metro bunder that starts and run `npm start` in project root
+3. Reload the app to load files from bundler that you have started
+4. The default iOS simulator's location is outside Finland. To change this:
    1. Open simulator
    2. Go to Debug > Location > Custom Location
    3. Enter coordinates of a Finnish metropolitan area, for eg. 60,203322 (lat) and 24,656253 (long)
@@ -24,17 +24,17 @@ Note: Metro bundler does not behave as it should when started with `react-native
 
 Note: Metro bundler does not behave as it should when started with `react-native`, hence steps 3 and 4 are necessary.
 
-1. Connect physical Android device or have Android emulator ready
+1. Connect a physical android device or have an android emulator ready
 2. Run `react-native run-android`
-3. Close metro bunder that starts and run `npm start` in project root
-4. Reload app to load files from bundler that you have started
+3. Close the metro bunder that starts and run `npm start` in project root
+4. Reload the app to load files from bundler that you have started
 
 ## Project Structure
 
 Project files are in `src` directory and are split by functionality. It has the following directories:
 
 1. _components_ : This contains all screen elements. All components related to a screen are contained in its own directory.
-2. _constants_ : This contains all values that will not change. Here the Kyyti Group location is stored.
+2. _constants_ : This contains all values that will not change. The Kyyti Group location is stored here.
 3. _services_ : This contains services for eg. Api
 4. _types_ : All shared custom types used in this project
 5. _utils_ : Helper functions and utility functions
